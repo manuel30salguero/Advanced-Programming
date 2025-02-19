@@ -51,6 +51,5 @@ int main() {
     // std::string s = c + " World"; // 'c' is an l-value, "World" is an r-value, '(c + " World")' is an r-value
     // int& refX = x; // 'x' is an l-value
     // int&& rref = 100; // '100' is an r-value, 'rref' is an r-value reference
-    
     return 0;
 }
