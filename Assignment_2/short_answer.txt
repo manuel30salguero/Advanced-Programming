@@ -1,0 +1,28 @@
+Marriage Pact
+-------------
+
+Q1. It is your choice to use either an ordered or unordered set. In a few sentences, what are some of the tradeoffs between the two? Additionally, please give an example (that has not been shown in lecture) of a valid hash function that could be used to hash student names for an unordered set.
+A1. 
+An ordered set maintains elements in a specific order, which allows efficient operations such as finding the minimum or maximum. However, insertion and deletion can be more costly since the structure must be reorganized to maintain order.
+
+On the other hand, an unordered set provides faster average-time operations for searching, inserting, and deleting elements, as it uses a hash table. However, it does not maintain elements in a specific order, and its performance can be affected by hash collisions.
+
+A valid hash function for student names in an unordered set is:
+
+#include <string>
+
+size_t hashStudentName(const std::string& name) {
+    size_t hashValue = 0;
+    for (char c : name) {
+        hashValue = hashValue * 31 + c; // 31 is a prime number to reduce collisions
+    }
+    return hashValue;
+}
+
+Q2. Note that we are saving pointers to names in the queue, not names themselves. Why might this be desired in this problem? What happens if the original set where the names are stored goes out of scope and the pointers are referenced?
+A2. 
+Pointers to names are stored in the queue instead of the names themselves to improve efficiency in terms of memory and time, avoiding unnecessary string copies. This is especially useful when handling large amounts of data.
+
+However, if the original set storing the names goes out of scope, while the queue still holds pointers to them, a dangling pointer issue occurs. Accessing these pointers may lead to segmentation faults or undefined behavior.
+
+To prevent this, using std::shared_ptr or std::unique_ptr in C++ is recommended to ensure proper memory management.
