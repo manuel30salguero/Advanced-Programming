@@ -1,0 +1,10 @@
+Make a Class
+------------
+
+Q1. What’s const-correctness and why is it important?
+A1. Const-correctness ensures that methods in a class do not modify the object state when they are not    
+    supposed to. It helps prevent unintended side effects and improves code safety.
+
+Q2. Is your class const-correct? How do you know?
+A2. It is const-correct because the public methods that do read the private attributes of the class,
+    do not modify them. That is, the private attributes are kept as read-only. 
