@@ -1,0 +1,87 @@
+-------------------------------------
+Part 1: Introduction to Copy vs. Move
+-------------------------------------
+Task 1.1 Reading and Discussion
+
+Questions:
+• What is the output of this program?
+    v1 size: 0  
+    v2 size: 4  
+    v3 size: 4
+    v2 is a copy of v1, so it keeps the same elements. v3 takes the data from v1 using a 
+    move, so v1 becomes empty.
+• Why does v1.size() return 0 after the move?
+    Because the move operation transfers v1’s internal resources to v3. After the move, v1 
+    no longer owns the data.
+• What does std::move do?
+    std::move casts an object to an rvalue, allowing move semantics to be used. It enables 
+    moving resources instead of copying them.
+• Why is v1 still in a valid but unspecified state?
+    C++ ensures that a moved-from object like v1 is still valid (you can reuse it), but its 
+    contents are not guaranteed. They are unspecified.
+
+-------------------------------------
+Part 3: Using Your Class
+-------------------------------------
+Task 3.1 Create Instances and Observe Behavior
+
+Questions: 
+• What constructors and assignments are called and when? 
+    Buffer b1(100); → Regular constructor is called.
+
+    Buffer b2 = b1; → Copy constructor is called.
+
+    Buffer b3 = std::move(b1); → Move constructor is called.
+
+    Buffer b4(50); → Regular constructor is called.
+
+    b4 = b2; → Copy assignment operator is called.
+
+    b4 = std::move(b2); → Move assignment operator is called.
+• What happens to the source object after a move? 
+    After a move operation, the source object is left in a valid but empty state. Its internal 
+    pointer is set to nullptr and its size is reset to 0. This prevents resource duplication and 
+    ensures safe destruction when the source object goes out of scope.
+• What would happen if you didn’t define the move constructor/assignment?
+    The compiler would fall back to the copy operations, which are less efficient because they 
+    allocate new memory and copy all elements. Also, moving wouldn't avoid deep copies, defeating 
+    the performance benefit.
+
+-------------------------------------
+Part 4: Performance Comparison
+-------------------------------------
+Task 4.1 Measure Performance
+
+Wrap a loop around operations with large buffers (e.g., size 10,000,000) and measure time taken when 
+copying vs. moving. Write down your findings.
+    
+    To compare the efficiency of copy and move constructors, I executed a program that creates a Buffer 
+    object with 10,000,000 integers and performs both copy and move operations. I repeated the process 
+    multiple times to observe variations in execution time.
+
+    Run 1: Copy constructor = 25 ms, Move constructor = 0 ms  
+    Run 2: Copy constructor = 42 ms, Move constructor = 0 ms  
+    Run 3: Copy constructor = 41 ms, Move constructor = 0 ms
+
+    The copy constructor takes significantly more time due to deep memory operations. In contrast, the move 
+    constructor is much faster as it only transfers ownership of the pointer. These results highlight the 
+    clear performance advantage of move semantics in large data structures.
+    
+-------------------------------------
+Part 5: Summary
+-------------------------------------
+
+Questions
+
+• What did you learn about move semantics?
+    I learned that move semantics provide a way to transfer ownership of resources efficiently using rvalue 
+    references. Unlike copying, moving avoids deep copies by reusing existing memory, which results in faster 
+    performance and reduced memory usage.
+• In what kinds of projects do you think this would matter?
+    Move semantics are especially important in performance-critical applications like game engines, simulations, 
+    data processing systems, or any project dealing with large data structures or dynamic memory (e.g., image or 
+    signal processing, or large container manipulation).
+• What are some risks of using std::move incorrectly?
+    Using std::move on an object too early can leave it in a valid but unusable state. Accessing a moved-from 
+    object without reinitializing it can cause logic bugs or undefined behavior. Another risk is unintentionally 
+    moving from an object that should be preserved, leading to data loss or unexpected results.
